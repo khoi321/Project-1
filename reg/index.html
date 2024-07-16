@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Form-v9 by Colorlib</title>
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- Font-->
+	<link rel="stylesheet" type="text/css" href="css/nunito-font.css">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="form-v9">
+	<div class="page-content">
+		<div class="form-v9-content" style="background-image: url('images/form-v9.jpg')">
+			<form id="registration-form" class="form-detail" action="/register" method="post">
+				<h2>Registration Form</h2>
+				<div class="form-row-total">
+					<div class="form-row">
+						<input type="text" name="user_name" id="user-name" class="input-text" placeholder="User Name" required pattern="^\S+$" title="User Name không được có khoảng trắng">
+					</div>
+					<div class="form-row">
+						<input type="email" name="email" id="your-email" class="input-text" placeholder="Your Email" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}" title="Email không đúng định dạng">
+					</div>
+				</div>
+				<div class="form-row-total">
+					<div class="form-row">
+						<input type="password" name="password" id="password" class="input-text" placeholder="Your Password" required pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" title="Password phải chứa ít nhất một chữ cái, một số và dài ít nhất 6 ký tự">
+					</div>
+					<div class="form-row">
+						<input type="password" name="confirm_password" id="confirm-password" class="input-text" placeholder="Confirm Password" required>
+					</div>
+				</div>
+				<div class="form-row-last">
+					<input type="submit" name="register" class="register" value="Register">
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		// Xử lý sau khi submit form đăng ký
+		document.getElementById('registration-form').addEventListener('submit', async function(event) {
+			event.preventDefault(); // Ngăn chặn form submit mặc định
+
+			// Gửi request POST đến server để đăng ký
+			const response = await fetch('/register', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					user_name: document.getElementById('user-name').value,
+					email: document.getElementById('your-email').value,
+					password: document.getElementById('password').value,
+					confirm_password: document.getElementById('confirm-password').value
+				})
+			});
+
+			const result = await response.json();
+
+			if (result.status === 'ok') {
+				// Chuyển hướng về trang public/index.html khi đăng ký thành công
+				window.location.href = '/'; // Điều hướng về trang chủ
+			} else {
+				alert('Đăng ký không thành công do email hoặc username đã trùng trên hệ thống. Vui lòng thử lại!');
+			}
+		});
+	</script>
+</body>
+</html>
